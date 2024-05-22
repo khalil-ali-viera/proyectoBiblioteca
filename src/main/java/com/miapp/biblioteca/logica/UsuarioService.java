@@ -53,7 +53,6 @@ public class UsuarioService {
 		for (Usuario usuario : usuarios) {
 			if (usuario.getId().equals(id)) {
 				usuario.setNombre(nuevoNombre);
-				;
 			}
 		}
 	}

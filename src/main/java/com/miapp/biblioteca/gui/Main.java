@@ -35,14 +35,20 @@ public class Main {
 		do {
 			System.out.println(" == Biblioteca DT Virtual == ");
 			System.out.println("1 - Crear Libro");
-			System.out.println("2 - Actualizar Libro");
+			System.out.println("2 - Actualizar Libro por ISBN");
 			System.out.println("3 - Buscar Libro por ISBN");
 			System.out.println("4 - Buscar Libro por titulo");
 			System.out.println("5 - Listar Libros");
 			System.out.println("6 - Eliminar Libro");
-			System.out.println("7 - Prestamos Libros");
-			System.out.println("8 - Devoluciones");
-			System.out.println("9 - Salir");
+			System.out.println("7 - Crear Usuario");
+			System.out.println("8 - Actualizar nombre de Usuario por ID");
+			System.out.println("9 - Buscar Usuario por ID");
+			System.out.println("10 - Listar Usuarios");
+			System.out.println("11 - Eliminar Usuario");
+			System.out.println("12 - Prestamos Libros ");
+			System.out.println("13 - Listar Libros prestados a un usuario");
+			System.out.println("14 - Devoluciones");
+			System.out.println("15 - Si quiere salir de la biblioteca virtual ingrese un número menor a 1 o mayor a 14");
 			System.out.println(" == Seleccione una opción == ");
 
 			opcion = sc.nextInt();
@@ -133,7 +139,6 @@ public class Main {
 				libroService.deleteByISBN(eliminarPorISBN);
 				break;
 
-			// PRESTAMOS LIBROS;
 			// CREAR USUARIO;
 			case 7:
 				System.out.println("Ingrese nombre del usuario:");
@@ -143,7 +148,59 @@ public class Main {
 				String usuarioId = sc.nextLine();
 
 				usuarioService.create(usuarioNombre, usuarioId);
+				break;
 
+			// ACTUALIZAR NOMBRE DE USUARIO POR ID
+			case 8:
+				System.out.println("Ingrese el id del usuario");
+				String actualizarId = sc.nextLine();
+
+				System.out.println("Ingrese el nuevo nombre para actualizar el usuario:");
+				String actualizarNombre = sc.nextLine();
+
+				usuarioService.updateById(actualizarId, actualizarNombre);
+				break;
+
+			// BUSCAR USUARIO POR ID
+			case 9:
+				System.out.println("Ingrese el id del usuario");
+				String buscarPorId = sc.nextLine();
+
+				Usuario usuarioEncontradoPorId = usuarioService.readById(buscarPorId);
+
+				if (usuarioEncontradoPorId != null) {
+
+					System.out.println("Usuario : " + usuarioEncontradoPorId.getNombre() + ", Id: "
+							+ usuarioEncontradoPorId.getId());
+
+				} else {
+					System.out.println("El usuario con el id " + buscarPorId + " no existe.");
+				}
+
+				break;
+
+			// LISTAR TODOS LOS USUARIOS
+			case 10:
+
+				ArrayList<Usuario> todosLosUsuarios = usuarioService.readAll();
+
+				for (Usuario usuario : todosLosUsuarios) {
+
+					System.out.println("Usuario: " + usuario.getNombre() + "(" + usuario.getId() + ")");
+
+				}
+				break;
+
+			// ELIMINAR USUARIO POR ID
+			case 11:
+				System.out.println("Ingrese el id del usuario:");
+				String eliminarUsuarioPorId = sc.nextLine();
+
+				usuarioService.deleteById(eliminarUsuarioPorId);
+				break;
+
+			// PRESTAMOS LIBROS;
+			case 12:
 				System.out.println("Ingrese el id del usuario:");
 				String usuarioIdBuscado = sc.nextLine();
 
@@ -165,8 +222,22 @@ public class Main {
 				}
 				break;
 
+			// LISTAR LIBROS PRESTADOS A USUARIO
+			case 13:
+				System.out.println("Ingrese el ID del usuario:");
+				String idUsuarioLibrosPrestados = sc.nextLine();
+
+				Usuario idUsuarioLibrosPrestadosBuscando = usuarioService.readById(idUsuarioLibrosPrestados);
+
+				if (idUsuarioLibrosPrestadosBuscando != null) {
+					System.out.println(idUsuarioLibrosPrestadosBuscando.getLibrosPrestados());
+				} else {
+					System.out.println("El usuario no existe");
+				}
+				break;
+
 			// DEVOLUCIONES;
-			case 8:
+			case 14:
 				System.out.println("Ingrese el ID del usuario: ");
 				String idUsuarioDevolucion = sc.nextLine();
 
@@ -185,16 +256,14 @@ public class Main {
 				} else {
 					System.out.println("No coincide");
 				}
-
 				break;
 
-			// SALIR;
 			default:
-				System.out.println("La opción ingresada es invalida.");
 				break;
 			}
 
-		} while (opcion != 9);
+		} while (opcion >= 1 && opcion <= 14);
+		System.out.println("Ha salido de la biblioteca virtual");
 	}
 
 }
